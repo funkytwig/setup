@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo -n "Email : "
+read email
+echo -n "Name  : "
+read name
+
 # create swap if not present
 
 swap=/swapfile
@@ -51,14 +56,11 @@ if [ ! -f ~/.emacs/init.el ]; then
     ln ~/setup/init.el ~/.emacs/init.el
 fi
 
-echo Email
-read email
-
 if [ ! -f ~/.ssh/id_rsa ]; then
     ssh-keygen -t rsa -b 4096 -C "$email"
     ls -l ~/.ssh/
     cat  ~/.ssh/id_rsa.pub
-    echo 'Press <RETURN>'
+    echo 'Add to GitHub then press <RETURN>'
     read a    
 fi
 
@@ -67,9 +69,6 @@ fi
 # git 
 
 git config --global user.email "$email"
-
-echo Name
-read name
 git config --global user.name  "$name"
 
 # pyenv

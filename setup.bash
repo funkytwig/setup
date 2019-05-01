@@ -4,15 +4,17 @@
 
 swap=/swapfile
 
-if [ ! -f $swap ]
+if [ ! -f $swap ]; then
    sudo fallocate -l 1G $swap
    sudo chmod 600 $swap
    sudo mkswap $swap
    sudo swapon /swapfile
-   sudo echo '/swapfile swap swap defaults 0 0' >> /etc/fstab
+   echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
+   cat /etc/fstab
+   sudo swapon --show
+   echo 'Press <RETURN>'
+   read a
 fi
-
-exit
 
 # add to ~/.bashrc if needed
 

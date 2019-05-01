@@ -39,42 +39,59 @@ else
     printf '\n\n. ~/setup/bash.inc\n' >> ~/.bash_profile
 fi
 
+. ~/.bash_profile
+
 # add emacs init.el
 
 if [ ! -d ~/.emacs ]; then
     mkdir ~/.emacs
 fi
 
-if { ! -f ~/.emacs/init.el ]; then
-    ln -s init.el ~/.emacs/init.el
+if [ ! -f ~/.emacs/init.el ]; then
+    ln ~/setup/init.el ~/.emacs/init.el
+fi
+
+echo Email
+read email
+
+if [ ! -f ~/.ssh/id_rsa ]; then
+    ssh-keygen -t rsa -b 4096 -C "$email"
+    ls -l ~/.ssh/
+    cat  ~/.ssh/id_rsa.pub
+    echo 'Press <RETURN>'
+    read a    
 fi
 
 . apt.bash
 
 # git 
 
-git config --global user.email "bene@funkytwig.com"
-git config --global user.name "Ben Edwards"
+git config --global user.email "$email"
+
+echo Name
+read name
+git config --global user.name  "$name"
 
 # pyenv
 
-git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-
-. ~/..bash_profile
-
-pyenv install 3.7.2
-pyenv rehash
-pyenv global 3.7.2
+if [ ! -d ~/.pyenv/ ]; then
+  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+  pyenv install 3.7.2
+  pyenv rehash
+  pyenv global 3.7.2
+fi
 
 # docker
 
-pip install docker-compose
+# pip install docker-compose
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+if [ ! -f /etc/apt/sources.list.d/docker.list ]; then
+  sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  sudo apt-get update
+  sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+fi
 
 sudo docker run hello-world
 

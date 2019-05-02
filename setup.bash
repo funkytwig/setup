@@ -82,7 +82,8 @@ fi
 
 # docker
 
-# pip install docker-compose
+pip install docker-compose
+pip install --upgrade pip
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 

@@ -5,7 +5,8 @@
 sudo apt update
 sudo apt full-upgrade
 
-sudo apt -y install - emacs-nox htop fail2ban logwatch git
+sudo apt -y install - emacs-nox htop fail2ban logwatch git sysstat
+sudo apt -y ssmtp mailutils
 
 # pyend
 
@@ -14,3 +15,6 @@ sudo apt -y install make build-essential libssl-dev zlib1g-dev libbz2-dev librea
 # docker
 
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+
+sudo apt -y autoremove
+sudo apt clean
